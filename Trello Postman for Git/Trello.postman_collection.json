@@ -1,0 +1,429 @@
+{
+	"info": {
+		"_postman_id": "12345",
+		"name": "Trello",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38092372"
+	},
+	"item": [
+		{
+			"name": "GET",
+			"item": [
+				{
+					"name": "Auth response status code is 200",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}?key={{key}}&token={{token}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get the Trello board to validate credentials",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/boards?key={{key}}&token={{token}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"boards"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test via browser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Verify API key and token are valid\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.username).to.exist;",
+									"    pm.expect(jsonData.id).to.exist;",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 300ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(300);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}?key={{key}}&token={{token}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "POST",
+			"item": [
+				{
+					"name": "Create a board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Board successfully created\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(\"Test Trello Board\");",
+									"    pm.expect(jsonData).to.have.property(\"id\")",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{postUrl}}/boards/?key={{key}}&token={{token}}&name=Test Trello Board",
+							"host": [
+								"{{postUrl}}"
+							],
+							"path": [
+								"boards",
+								""
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								},
+								{
+									"key": "name",
+									"value": "Test Trello Board"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a new list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"List successfully created\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(\"A New List Created\");",
+									"    pm.expect(jsonData).to.have.property(\"id\")",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{postUrl}}/lists?name=A New List Created&idBoard={{boardID}}&key={{key}}&token={{token}}",
+							"host": [
+								"{{postUrl}}"
+							],
+							"path": [
+								"lists"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "A New List Created"
+								},
+								{
+									"key": "idBoard",
+									"value": "{{boardID}}"
+								},
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a card",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Card successfully created\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(\"First card created\");",
+									"    pm.expect(jsonData).to.have.property(\"id\")",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{postUrl}}cards?idList={{idList}}&key={{key}}&token={{token}}&name=First card created",
+							"host": [
+								"{{postUrl}}cards"
+							],
+							"query": [
+								{
+									"key": "idList",
+									"value": "{{idList}}"
+								},
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								},
+								{
+									"key": "name",
+									"value": "First card created"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PUT",
+			"item": [
+				{
+					"name": "Update the created card",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Card successfully updated\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(\"Updated name for this card\");",
+									"    pm.expect(jsonData.desc).to.contain(\"This card was updated according to the Task 5 requirements in the exam.\")",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{postUrl}}/cards/{{cardID}}?key={{key}}&token={{token}}&name=Updated name for this card&desc=This card was updated according to the Task 5 requirements in the exam.",
+							"host": [
+								"{{postUrl}}"
+							],
+							"path": [
+								"cards",
+								"{{cardID}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								},
+								{
+									"key": "name",
+									"value": "Updated name for this card",
+									"description": "Updated name for this card"
+								},
+								{
+									"key": "desc",
+									"value": "This card was updated according to the Task 5 requirements in the exam.",
+									"description": "This card was updated according to the Task 5 requirements in the exam."
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update the card's cover color",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Validate cover color of the card\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.id).to.eql(\"234680\");",
+									"    pm.expect(jsonData.cover.color).to.eql(\"pink\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"234680\",\n    \"badges\": {\n        \"attachmentsByType\": {\n            \"trello\": {\n                \"board\": 0,\n                \"card\": 0\n            }\n        },\n        \"externalSource\": null,\n        \"location\": false,\n        \"votes\": 0,\n        \"viewingMemberVoted\": false,\n        \"subscribed\": false,\n        \"attachments\": 0,\n        \"fogbugz\": \"\",\n        \"checkItems\": 0,\n        \"checkItemsChecked\": 0,\n        \"checkItemsEarliestDue\": null,\n        \"comments\": 0,\n        \"description\": true,\n        \"due\": null,\n        \"dueComplete\": false,\n        \"lastUpdatedByAi\": false,\n        \"start\": null\n    },\n    \"checkItemStates\": [],\n    \"closed\": false,\n    \"dueComplete\": false,\n    \"dateLastActivity\": \"2024-09-12T18:28:36.954Z\",\n    \"desc\": \"This card was updated according to the Task 5 requirements in the exam.\",\n    \"descData\": {\n        \"emoji\": {}\n    },\n    \"due\": null,\n    \"dueReminder\": null,\n    \"email\": null,\n    \"idBoard\": \"66e32a846e3c0b7e6f47d581\",\n    \"idChecklists\": [],\n    \"idList\": \"66e32d9f5d620803a530f05f\",\n    \"idMembers\": [],\n    \"idMembersVoted\": [],\n    \"idShort\": 2,\n    \"idAttachmentCover\": null,\n    \"labels\": [],\n    \"idLabels\": [],\n    \"manualCoverAttachment\": false,\n    \"name\": \"Updated name for this card\",\n    \"pos\": 32768,\n    \"shortLink\": \"hLgArcnQ\",\n    \"shortUrl\": \"https://trello.com/c/hLgArcnQ\",\n    \"start\": null,\n    \"subscribed\": false,\n    \"url\": \"https://trello.com/c/hLgArcnQ/2-updated-name-for-this-card\",\n    \"cover\": {\n        \"idAttachment\": null,\n        \"color\": \"pink\",\n        \"idUploadedBackground\": null,\n        \"size\": \"normal\",\n        \"brightness\": \"dark\",\n        \"idPlugin\": null\n    },\n    \"isTemplate\": false,\n    \"cardRole\": null\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{postUrl}}/cards/{{cardID}}?key={{key}}&token={{token}}&name=Updated cover color for this card&desc=This card was updated according to the Task 6 requirements in the exam.",
+							"host": [
+								"{{postUrl}}"
+							],
+							"path": [
+								"cards",
+								"{{cardID}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{key}}"
+								},
+								{
+									"key": "token",
+									"value": "{{token}}"
+								},
+								{
+									"key": "name",
+									"value": "Updated cover color for this card"
+								},
+								{
+									"key": "desc",
+									"value": "This card was updated according to the Task 6 requirements in the exam."
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
